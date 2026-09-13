@@ -13,12 +13,12 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
-# 预编译 xcframework 内的 dSYM 必须入库：
+# 预编译 xcframework 内的 dSYM 必须完整入库：
 # SDWebImage.xcframework 的 Info.plist 声明了 DebugSymbolsPath = dSYMs，
 # 缺失会导致归档报 "Missing path ... from XCFramework"。
-# 只放开 iOS 需要的两个切片，其他平台（tvos/watchos/xros/macos）仍忽略。
-!**/*.xcframework/ios-arm64/dSYMs/**
-!**/*.xcframework/ios-arm64_x86_64-simulator/dSYMs/**
+# 且这些 dSYM 在 xcframework 的 _CodeSignature 清单内，只入库部分切片会导致
+# SignatureCollection 校验失败，因此所有平台切片都必须提交。
+!**/*.xcframework/**/dSYMs/**
 
 # CocoaPods
 #
