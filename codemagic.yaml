@@ -1,0 +1,57 @@
+workflows:
+  ios-native-quick-start:
+    name: QXQ-2026
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: QXQ2026
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.vesicadeskdanbaifenbu.cn
+      vars:
+        PROJECT_PATH: "QXQ-2026"
+        XCODE_PROJECT: "QXQ-2026/QXQ-2026.xcodeproj"   # 没有 CocoaPods，直接用 .xcodeproj
+        XCODE_SCHEME: "QXQ-2026"
+        APP_STORE_APPLE_ID: "6809367150"
+      xcode: latest
+      # cocoapods: default   # ❌ 删除
+    scripts:
+      # ❌ 删除 "Install CocoaPods dependencies" 脚本
+
+      - name: Set up provisioning profiles settings on Xcode project
+        script: |
+          xcode-project use-profiles --project "$XCODE_PROJECT"
+
+      - name: Increment build number
+        script: |
+          cd "$PROJECT_PATH"
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo 0)
+          [ -z "$LATEST_BUILD_NUMBER" ] && LATEST_BUILD_NUMBER=0
+          echo "Latest build number: $LATEST_BUILD_NUMBER"
+          agvtool new-version -all $((LATEST_BUILD_NUMBER + 1))
+
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
+    publishing:
+      email:
+        recipients:
+          - 985446278@qq.com
+          - user_2@example.com
+        notify:
+          success: true
+          failure: false
+      app_store_connect:
+        auth: integration
+        submit_to_app_store: true
