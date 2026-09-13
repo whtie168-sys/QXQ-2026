@@ -13,6 +13,13 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
+# 预编译 xcframework 内的 dSYM 必须入库：
+# SDWebImage.xcframework 的 Info.plist 声明了 DebugSymbolsPath = dSYMs，
+# 缺失会导致归档报 "Missing path ... from XCFramework"。
+# 只放开 iOS 需要的两个切片，其他平台（tvos/watchos/xros/macos）仍忽略。
+!**/*.xcframework/ios-arm64/dSYMs/**
+!**/*.xcframework/ios-arm64_x86_64-simulator/dSYMs/**
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
