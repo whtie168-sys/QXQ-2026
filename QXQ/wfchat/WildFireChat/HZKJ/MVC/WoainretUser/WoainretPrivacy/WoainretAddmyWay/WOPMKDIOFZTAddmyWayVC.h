@@ -1,0 +1,16 @@
+//
+//  WOPMKDIOFZTAddmyWayVC.h
+//  WUHOIBDK
+//
+//  Created by Ruby on 1/30/24.
+//
+
+#import "QABWJEFDOCYMainVC.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface WOPMKDIOFZTAddmyWayVC : QABWJEFDOCYMainVC
+
+@end
+
+NS_ASSUME_NONNULL_END
