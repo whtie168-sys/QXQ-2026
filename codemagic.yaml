@@ -1,4 +1,5 @@
 workflows:
+
   ios-native-quick-start:
 
     name: QXQ26
@@ -9,13 +10,16 @@ workflows:
 
 
     integrations:
+
       app_store_connect: PlantPulse
 
 
     environment:
 
       ios_signing:
+
         distribution_type: app_store
+
         bundle_identifier: com.KilnTracebiaomianzudi.cn
 
 
@@ -29,7 +33,7 @@ workflows:
 
         XCODE_SCHEME: "ios-chat"
 
-        APP_STORE_APPLE_ID: 6809854010
+        APP_STORE_APPLE_ID: 6809367150
 
 
       xcode: latest
@@ -40,36 +44,22 @@ workflows:
 
 
       - name: Set up provisioning profiles settings on Xcode project
+
         script: |
+
           xcode-project use-profiles
 
 
 
-      - name: Increment build number
-        script: |
-
-          cd "$CM_BUILD_DIR/$PROJECT_PATH"
-
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" || echo "0")
-
-          echo "Current build: $LATEST_BUILD_NUMBER"
-
-
-          NEXT_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
-
-          echo "New build: $NEXT_BUILD_NUMBER"
-
-
-          xcrun agvtool new-version -all "$NEXT_BUILD_NUMBER"
-
-
 
       - name: Build ipa for distribution
+
         script: |
 
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
+            --scheme "$XCODE_SCHEME" \
+            --disable-xcpretty
 
 
 
