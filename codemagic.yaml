@@ -31,7 +31,7 @@ workflows:
 
         XCODE_WORKSPACE: "QXQ/ios-chat.xcworkspace"
 
-        XCODE_SCHEME: "ios-chat"
+        XCODE_SCHEME: "WildFireChat"
 
         APP_STORE_APPLE_ID: 6809367150
 
@@ -48,7 +48,6 @@ workflows:
         script: |
 
           xcode-project use-profiles
-
 
 
 
